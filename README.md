@@ -1,6 +1,6 @@
 # Stripe Dashboard Shell
 
-A reusable React dashboard shell inspired by Stripe's dashboard design. Perfect for quickly bootstrapping admin panels, internal tools, and prototypes.
+A reusable React dashboard shell.
 
 ## Quick Start
 
@@ -15,9 +15,7 @@ Visit `http://localhost:5173` to see the dashboard with component examples.
 
 - **Stripe-style layout** - 250px sidebar + 60px header + scrollable content area
 - **Pre-built components** - Badge, Button, Input, Select, Table, Toggle, Tooltip, and more
-- **Dark mode support** - CSS variables automatically switch with `.dark-mode` class
 - **Routing ready** - React Router setup with individual page files
-- **Responsive** - Components adapt to container width using `@container` queries
 
 ## Project Structure
 
