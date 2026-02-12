@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Badge from '../components/Badge';
 import Button from '../components/Button';
-import Input, { Select, Textarea } from '../components/Input';
+import Input, { Select, Textarea, Checkbox, Radio } from '../components/Input';
 import Table from '../components/Table';
 import Switch from '../components/Switch';
 import Toggle, { ToggleGroup } from '../components/Toggle';
@@ -9,37 +9,45 @@ import Tooltip from '../components/Tooltip';
 import Dialog from '../components/Dialog';
 import { Icon } from '../icons/SailIcons';
 
-// Reusable component section with side-by-side layout
-const ComponentSection = ({ title, children, code, onClose }) => (
-  <section>
-    <div className="flex items-center justify-between mb-4">
-      <h2 className="text-xl font-semibold text-default">{title}</h2>
-      {onClose && (
+// Reusable component section with code dialog
+const ComponentSection = ({ title, children, code }) => {
+  const [showCode, setShowCode] = useState(false);
+
+  return (
+    <section className="max-w-[800px]">
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-xl font-semibold text-default">{title}</h2>
         <button
-          onClick={onClose}
-          className="text-icon-subdued hover:text-icon-default transition-colors cursor-pointer"
-          aria-label="Close section"
+          onClick={() => setShowCode(true)}
+          className="text-sm text-brand hover:text-button-primary-pressed transition-colors cursor-pointer"
         >
-          <Icon name="close" size="small" fill="currentColor" />
+          View code
         </button>
-      )}
-    </div>
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-      <div className="flex items-start">
-        <div className="w-full">{children}</div>
       </div>
-      <div className="bg-gray-100 p-5 rounded-xl overflow-x-auto">
-        <pre className="text-xs text-gray-800 font-mono whitespace-pre">{code}</pre>
+      <div className="bg-bg-offset/50 flex p-12 rounded-xl border border-border items-center justify-center">
+        {children}
       </div>
-    </div>
-  </section>
-);
+      <Dialog
+        open={showCode}
+        onClose={() => setShowCode(false)}
+        title={`${title} Code`}
+        size="xlarge"
+      >
+        <div className="bg-gray-100 p-5 rounded-lg overflow-x-auto">
+          <pre className="text-xs text-gray-800 font-mono whitespace-pre">{code}</pre>
+        </div>
+      </Dialog>
+    </section>
+  );
+};
 
 export default function Home() {
   const [inputValue, setInputValue] = useState('');
   const [selectValue, setSelectValue] = useState('option1');
   const [textareaValue, setTextareaValue] = useState('');
   const [switchChecked, setSwitchChecked] = useState(false);
+  const [checkboxChecked, setCheckboxChecked] = useState(false);
+  const [selectedRadio, setSelectedRadio] = useState('option1');
   const [selectedCard, setSelectedCard] = useState('card1');
   const [dialogOpen, setDialogOpen] = useState(false);
 
@@ -232,6 +240,84 @@ export default function Home() {
             onChange={() => { }}
             disabled
             label="Disabled switch"
+          />
+        </div>
+      </ComponentSection>
+
+      <ComponentSection
+        title="Checkbox"
+        code={`<Checkbox
+  checked={checked}
+  onChange={(e) => setChecked(e.target.checked)}
+  label="Accept terms"
+  description="I agree to the terms and conditions"
+/>
+<Checkbox disabled label="Disabled" />`}
+      >
+        <div className="flex flex-col space-y-4">
+          <Checkbox
+            checked={checkboxChecked}
+            onChange={(e) => setCheckboxChecked(e.target.checked)}
+            label="Accept terms"
+            description="I agree to the terms and conditions"
+          />
+          <Checkbox
+            checked={true}
+            onChange={() => { }}
+            label="Checked checkbox"
+          />
+          <Checkbox
+            checked={false}
+            onChange={() => { }}
+            disabled
+            label="Disabled checkbox"
+          />
+        </div>
+      </ComponentSection>
+
+      <ComponentSection
+        title="Radio"
+        code={`<Radio
+  checked={selected === 'option1'}
+  onChange={() => setSelected('option1')}
+  name="plan"
+  value="option1"
+  label="Basic plan"
+  description="$9/month"
+/>
+<Radio
+  checked={selected === 'option2'}
+  onChange={() => setSelected('option2')}
+  name="plan"
+  value="option2"
+  label="Pro plan"
+  description="$29/month"
+/>`}
+      >
+        <div className="flex flex-col space-y-4">
+          <Radio
+            checked={selectedRadio === 'option1'}
+            onChange={() => setSelectedRadio('option1')}
+            name="plan"
+            value="option1"
+            label="Basic plan"
+            description="$9/month - For individuals"
+          />
+          <Radio
+            checked={selectedRadio === 'option2'}
+            onChange={() => setSelectedRadio('option2')}
+            name="plan"
+            value="option2"
+            label="Pro plan"
+            description="$29/month - For small teams"
+          />
+          <Radio
+            checked={selectedRadio === 'option3'}
+            onChange={() => setSelectedRadio('option3')}
+            name="plan"
+            value="option3"
+            label="Enterprise"
+            description="Custom pricing"
           />
         </div>
       </ComponentSection>

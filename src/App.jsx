@@ -22,7 +22,7 @@ export default function App() {
         <Header />
 
         {/* Main Content Area - offset for fixed sidebar and header */}
-        <div className="ml-sidebar-width pt-[60px] flex flex-col min-w-0 relative scrollbar-auto">
+        <div className="ml-sidebar-width pt-[60px] flex flex-col min-w-0 flex-1 relative scrollbar-auto">
           <div className="max-w-[1280px] w-full mx-auto">
 
             {/* Content */}

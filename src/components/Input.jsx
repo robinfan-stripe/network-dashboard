@@ -159,7 +159,7 @@ export const Textarea = ({
       onChange={onChange}
       placeholder={placeholder}
       rows={rows}
-      className={`w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-[rgba(8,142,249,0.36)] focus:ring-4 text-[16px] sm:text-sm resize-none ${error ? 'border-critical' : ''} ${className}`}
+      className={`w-full px-3 py-2 bg-white border border-border rounded-md focus:outline-none focus:ring-[rgba(8,142,249,0.36)] focus:ring-4 text-[16px] sm:text-sm resize-none ${error ? 'border-critical' : ''} ${className}`}
       {...props}
     />
   );
@@ -237,6 +237,102 @@ export const Select = ({
         <p className="mt-1.5 text-xs text-critical">{errorMessage}</p>
       )}
     </>
+  );
+};
+
+export const Checkbox = ({
+  checked,
+  onChange,
+  label,
+  description,
+  disabled = false,
+  className = '',
+  ...props
+}) => {
+  return (
+    <label className={`inline-flex items-start gap-2 cursor-pointer group ${disabled ? 'opacity-50 cursor-not-allowed' : ''} ${className}`}>
+      <div className="relative flex-shrink-0">
+        <input
+          type="checkbox"
+          checked={checked}
+          onChange={onChange}
+          disabled={disabled}
+          className="sr-only peer"
+          {...props}
+        />
+        <div
+          className={`w-[16px] h-[16px] mt-0.5 border rounded-sm transition-all flex items-center justify-center peer-focus:ring-[rgba(8,142,249,0.36)] peer-focus:ring-4 ${checked
+            ? 'bg-blurple border-blurple'
+            : 'bg-white border-border group-hover:border-gray-400'
+            }`}
+        >
+          {checked && (
+            <svg width="10" height="10" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10 3L4.5 8.5L2 6" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          )}
+        </div>
+      </div>
+      {(label || description) && (
+        <div className="space-y-0.5">
+          {label && (
+            <span className="block text-sm text-default">{label}</span>
+          )}
+          {description && (
+            <span className="block text-xs text-subdued">{description}</span>
+          )}
+        </div>
+      )}
+    </label>
+  );
+};
+
+export const Radio = ({
+  checked,
+  onChange,
+  name,
+  value,
+  label,
+  description,
+  disabled = false,
+  className = '',
+  ...props
+}) => {
+  return (
+    <label className={`inline-flex items-start gap-2 cursor-pointer group ${disabled ? 'opacity-50 cursor-not-allowed' : ''} ${className}`}>
+      <div className="relative flex-shrink-0">
+        <input
+          type="radio"
+          checked={checked}
+          onChange={onChange}
+          name={name}
+          value={value}
+          disabled={disabled}
+          className="sr-only peer"
+          {...props}
+        />
+        <div
+          className={`w-[16px] h-[16px] mt-0.5 border rounded-full transition-all flex items-center justify-center peer-focus:ring-[rgba(8,142,249,0.36)] peer-focus:ring-4 ${checked
+            ? 'bg-blurple border-blurple'
+            : 'bg-white border-border group-hover:border-gray-400'
+            }`}
+        >
+          {checked && (
+            <div className="w-[6px] h-[6px] rounded-full bg-white" />
+          )}
+        </div>
+      </div>
+      {(label || description) && (
+        <div className="space-y-0.5">
+          {label && (
+            <span className="block text-sm text-default">{label}</span>
+          )}
+          {description && (
+            <span className="block text-xs text-subdued">{description}</span>
+          )}
+        </div>
+      )}
+    </label>
   );
 };
 
