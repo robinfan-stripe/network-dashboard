@@ -9,20 +9,23 @@ export const Button = ({
   disabled = false,
   className = '',
   icon,
+  href,
   ...props
 }) => {
-  const baseStyles = 'inline-flex items-center justify-center font-semibold rounded-md transition-colors duration-200 focus:outline-none leading-none focus:ring-[rgba(8,142,249,0.36)] focus:ring-4';
+  const baseStyles = 'inline-flex items-center justify-center font-medium rounded-[6px] transition-[background-color,box-shadow] duration-150 ease-[cubic-bezier(0,0.09,0.4,1)] hover:duration-0 focus:outline-none focus:ring-[rgba(8,142,249,0.36)] focus:ring-4';
 
+  // topShadow + keyline composited as box-shadow layers (matches pay-server's Sail Button)
+  // topShadow sits above the keyline in the shadow stack, creating an inset shadow effect on the border
   const variants = {
-    primary: 'bg-button-primary-bg text-button-primary-text border border-button-primary-border hover:border-button-primary-border-hover active:bg-button-primary-pressed disabled:opacity-50 shadow-[0px_1px_1px_0px_rgba(47,14,99,0.15)]',
-    secondary: 'bg-button-secondary-bg text-button-secondary-text border border-button-secondary-border hover:border-button-secondary-border-hover active:bg-button-secondary-pressed disabled:opacity-50 shadow-[0px_1px_1px_0px_rgba(33,37,44,0.10)]',
-    danger: 'bg-button-danger-bg text-button-danger-text border border-button-danger-border hover:border-button-danger-border-hover active:bg-button-danger-pressed disabled:opacity-50 shadow-[0px_1px_1px_0px_rgba(33,37,44,0.10)]',
+    primary: 'bg-button-primary-bg text-button-primary-text active:bg-button-primary-pressed disabled:opacity-50 shadow-[0px_1px_1px_0px_rgba(20,19,78,0.32),0_0_0_1px_var(--color-button-primary-border)] hover:shadow-[0px_1px_1px_0px_rgba(20,19,78,0.32),0_0_0_1px_var(--color-button-primary-border-hover)] active:shadow-[0px_-1px_1px_0px_rgba(20,19,78,0.32),0_0_0_1px_var(--color-button-primary-border-hover)]',
+    secondary: 'bg-button-secondary-bg text-button-secondary-text active:bg-button-secondary-pressed disabled:opacity-50 shadow-[0px_1px_1px_0px_rgba(16,17,26,0.16),0_0_0_1px_var(--color-button-secondary-border)] hover:shadow-[0px_1px_1px_0px_rgba(16,17,26,0.16),0_0_0_1px_var(--color-button-secondary-border-hover)] active:shadow-[0px_-1px_1px_0px_rgba(16,17,26,0.16),0_0_0_1px_var(--color-button-secondary-border)]',
+    danger: 'bg-button-danger-bg text-button-danger-text active:bg-button-danger-pressed disabled:opacity-50 shadow-[0px_1px_1px_0px_rgba(62,2,26,0.32),0_0_0_1px_var(--color-button-danger-border)] hover:shadow-[0px_1px_1px_0px_rgba(62,2,26,0.32),0_0_0_1px_var(--color-button-danger-border-hover)] active:shadow-[0px_-1px_1px_0px_rgba(62,2,26,0.32),0_0_0_1px_var(--color-button-danger-border)]',
   };
 
   const sizes = {
-    sm: 'h-[28px] py-[4px] px-[8px] text-[12px]',
-    md: 'h-[32px] py-[4px] px-[8px] text-[14px]',
-    lg: 'h-[40px] py-[8px] px-[16px] text-[16px]',
+    sm: 'h-[24px] py-[4px] px-[8px] text-[12px] leading-[16px] gap-[4px]',
+    md: 'h-[28px] py-[4px] px-[8px] text-[14px] leading-[20px] gap-[6px]',
+    lg: 'h-[40px] py-[8px] px-[16px] text-[16px] leading-[24px] gap-[8px]',
   };
 
   // Map button size to icon size
@@ -32,15 +35,35 @@ export const Button = ({
     lg: 'small',
   };
 
+  const combinedClassName = `${baseStyles} ${variants[variant]} ${sizes[size]} ${disabled ? 'opacity-60 pointer-events-none' : 'cursor-pointer'} ${className}`;
+
+  const content = (
+    <>
+      {icon && <Icon name={icon} size={iconSizes[size]} fill="currentColor" />}
+      {children}
+    </>
+  );
+
+  if (href) {
+    return (
+      <a
+        href={href}
+        className={combinedClassName}
+        {...props}
+      >
+        {content}
+      </a>
+    );
+  }
+
   return (
     <button
       onClick={onClick}
       disabled={disabled}
-      className={`${baseStyles} ${variants[variant]} ${sizes[size]} ${disabled ? 'opacity-60' : 'cursor-pointer'} ${className}`}
+      className={combinedClassName}
       {...props}
     >
-      {icon && <Icon name={icon} size={iconSizes[size]} fill="currentColor" className={children ? 'mr-1.5' : ''} />}
-      {children}
+      {content}
     </button>
   );
 };

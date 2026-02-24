@@ -21,11 +21,11 @@ export const Switch = ({
           {...props}
         />
         <div
-          className={`w-[34px] h-[20px] border rounded-full transition-all ${checked ? 'bg-blurple border-blurple' : 'bg-offset border-border group-hover:border-gray-400'
+          className={`w-[34px] h-[20px] border rounded-full transition-all ${checked ? 'bg-brand-500 border-brand-500' : 'bg-offset border-border group-hover:border-gray-400'
             }`}
         />
         <div
-          className={`absolute top-0 left-0 w-[20px] h-[20px] border bg-surface rounded-full transition-all ${checked ? 'translate-x-[14px] border-blurple' : 'border-border group-hover:border-gray-400'
+          className={`absolute top-0 left-0 w-[20px] h-[20px] border bg-surface rounded-full transition-all ${checked ? 'translate-x-[14px] border-brand-500' : 'border-border group-hover:border-gray-400'
             }`}
         />
       </div>

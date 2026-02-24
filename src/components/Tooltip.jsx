@@ -20,17 +20,12 @@ const Tooltip = ({
     right: 'left-full top-1/2 -translate-y-1/2 ml-2',
   };
 
-  const variantBaseClasses = {
-    default: 'p-[12px] text-sm w-[300px] rounded-lg text-left',
-    minimal: 'px-2 py-1 text-sm whitespace-nowrap bg-gray-800 text-white',
+  // Matches Sail Tooltip variants: default = "description", minimal = "label"
+  // Uses tooltip-specific tokens that elevate the surface in dark mode (per pay-server darkMode.ts)
+  const variantClasses = {
+    default: 'p-[16px] text-[14px] leading-[20px] w-[300px] rounded-[8px] text-left bg-tooltip-surface text-default border border-tooltip-border shadow-[0px_1px_1px_0px_rgba(0,0,0,0.12),0px_2px_5px_0px_rgba(48,49,61,0.08)]',
+    minimal: 'px-[8px] py-[4px] text-[14px] leading-[20px] whitespace-nowrap rounded-[6px] bg-tooltip-label-bg text-tooltip-label-text shadow-[0px_1px_1px_0px_rgba(0,0,0,0.12),0px_2px_5px_0px_rgba(48,49,61,0.08)]',
   };
-
-  const variantModeClasses = {
-    default: 'bg-offset text-subdued border border-border shadow-md',
-    minimal: '',
-  };
-
-  const variantClasses = `${variantBaseClasses[variant]} ${variantModeClasses[variant]}`;
 
   // Calculate position for portal-based tooltip
   useEffect(() => {
@@ -85,7 +80,7 @@ const Tooltip = ({
         </div>
         {isVisible && createPortal(
           <div
-            className={`fixed ${portalPlacementClasses[placement]} ${variantClasses} rounded transition-opacity pointer-events-none z-[100]`}
+            className={`fixed ${portalPlacementClasses[placement]} ${variantClasses[variant]} rounded transition-opacity pointer-events-none z-[100]`}
             style={{ top: position.top, left: position.left }}
           >
             {content}
@@ -101,7 +96,7 @@ const Tooltip = ({
     <div className={`relative group/tooltip inline-flex ${className}`}>
       {children}
       <div
-        className={`absolute ${placementClasses[placement]} ${variantClasses} rounded opacity-0 group-hover/tooltip:opacity-100 transition-opacity pointer-events-none z-50`}
+        className={`absolute ${placementClasses[placement]} ${variantClasses[variant]} rounded opacity-0 group-hover/tooltip:opacity-100 transition-opacity pointer-events-none z-50`}
       >
         {content}
       </div>

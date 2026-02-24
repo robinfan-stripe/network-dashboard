@@ -106,7 +106,7 @@ export const Sidebar = () => {
           <NavItem icon={<Icon name="home" size="small" fill="currentColor" />} label="Home" to="/" active={isActive('/')} />
           <NavItem icon={<Icon name="balance" size="small" fill="currentColor" />} label="Balances" to="/balances" active={isActive('/balances')} />
           <NavItem icon={<Icon name="arrowsLoop" size="small" fill="currentColor" />} label="Transactions" to="/transactions" active={isActive('/transactions')} />
-          <NavItem icon={<Icon name="person" size="small" fill="currentColor" />} label="Directory" to="/directory" active={isActive('/directory')} />
+          <NavItem icon={<Icon name="platform" size="small" fill="currentColor" />} label="Network" to="/prototypes/network" active={location.pathname.startsWith('/prototypes/network')} />
           <NavItem icon={<Icon name="product" size="small" fill="currentColor" />} label="Product catalog" to="/product-catalog" active={isActive('/product-catalog')} />
         </div>
 

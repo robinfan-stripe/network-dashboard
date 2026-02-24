@@ -16,18 +16,18 @@ const Toggle = ({
       type="button"
       onClick={onClick}
       className={`w-full text-left rounded-lg transition-colors cursor-pointer ${selected
-        ? 'border-2 border-blurple p-[11px]'
+        ? 'border-2 border-brand-500 p-[11px]'
         : 'border border-border hover:bg-offset p-[12px]'
         }`}
     >
       <div className="flex items-start gap-2.5">
         {Icon && (
-          <div className={`mt-0.5 flex-shrink-0 ${selected ? 'text-blurple' : 'text-icon-subdued'}`}>
+          <div className={`mt-0.5 flex-shrink-0 ${selected ? 'text-brand-500' : 'text-icon-subdued'}`}>
             <Icon size={16} />
           </div>
         )}
         <div className="flex-1">
-          <div className={`text-sm font-medium ${selected ? 'text-blurple' : 'text-default'}`}>
+          <div className={`text-sm font-medium ${selected ? 'text-brand-500' : 'text-default'}`}>
             {title}
           </div>
           {description && (

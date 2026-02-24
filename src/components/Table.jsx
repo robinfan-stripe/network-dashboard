@@ -86,11 +86,11 @@ const Table = ({
         ) : (
           <table className="w-full">
             <thead>
-              <tr className="border-b border-border">
+              <tr className="border-b border-neutral-50">
                 {columns.map((column, colIndex) => (
                   <th
                     key={column.key || colIndex}
-                    className={`py-3 ${column.paddingX || cellPaddingX} text-xs font-medium uppercase text-subdued ${getAlignClass(column.align)} ${getWidthClass(column.width)}`}
+                    className={`py-3 ${column.paddingX || cellPaddingX} text-xs font-semibold text-default ${getAlignClass(column.align)} ${getWidthClass(column.width)}`}
                   >
                     {column.header || ''}
                   </th>
@@ -108,13 +108,13 @@ const Table = ({
                 data.map((item, rowIndex) => (
                   <tr
                     key={item[rowKey] ?? rowIndex}
-                    className={`border-b text-sm text-subdued border-border hover:bg-offset transition-colors duration-100 ${onRowClick ? 'cursor-pointer' : ''}`}
+                    className={`border-b text-sm text-subdued border-neutral-50 hover:bg-offset transition-colors duration-100 ${onRowClick ? 'cursor-pointer' : ''}`}
                     onClick={() => onRowClick?.(item, rowIndex)}
                   >
                     {columns.map((column, colIndex) => (
                       <td
                         key={column.key || colIndex}
-                        className={`py-1.5 ${column.paddingX || cellPaddingX} h-[36px] ${getAlignClass(column.align)} ${getWidthClass(column.width)}`}
+                        className={`py-1 ${column.paddingX || cellPaddingX} h-[32px] ${getAlignClass(column.align)} ${getWidthClass(column.width)}`}
                       >
                         {renderCell(column, item, rowIndex)}
                       </td>

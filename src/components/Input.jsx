@@ -11,14 +11,16 @@ export const FormField = ({
 }) => {
   return (
     <div className={`space-y-1 ${className}`}>
-      {label && (
-        <label className="block text-sm font-medium text-default">
-          {label}
-        </label>
-      )}
-      {description && (
-        <p className="text-xs text-subdued">{description}</p>
-      )}
+      <div>
+        {label && (
+          <label className="block text-sm font-medium text-default">
+            {label}
+          </label>
+        )}
+        {description && (
+          <p className="text-xs text-subdued">{description}</p>
+        )}
+      </div>
       {children}
       {error && errorMessage && (
         <p className="text-xs text-critical">{errorMessage}</p>
@@ -52,6 +54,7 @@ const Input = ({
   value,
   onChange,
   placeholder,
+  size = 'md',
   className = '',
   icon: Icon,
   prefix,
@@ -64,6 +67,12 @@ const Input = ({
   description,
   ...props
 }) => {
+  const sizes = {
+    sm: 'h-[24px] py-[4px] px-[8px] text-[12px] leading-[16px]',
+    md: 'h-[28px] py-[4px] px-[8px] text-[14px] leading-[20px]',
+    lg: 'h-[40px] py-[8px] px-[12px] text-[16px] leading-[24px]',
+  };
+
   // Determine padding based on icon, prefix, or suffix
   const leftPadding = Icon ? 'pl-9' : prefix ? 'pl-7' : '';
   const rightPadding = suffix ? 'pr-12' : '';
@@ -111,7 +120,7 @@ const Input = ({
           onChange={handleChange}
           placeholder={placeholder}
           disabled={disabled}
-          className={`w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-[rgba(8,142,249,0.36)] focus:ring-4 text-[16px] sm:text-sm text-default placeholder:text-placeholder disabled:opacity-60 disabled:bg-gray-100 ${leftPadding} ${rightPadding} ${error ? 'border-critical' : ''} ${className}`}
+          className={`w-full appearance-none rounded-[6px] bg-surface shadow-[0_0_0_1px_var(--color-border)] transition-shadow duration-[240ms] focus:outline-none focus:shadow-[0_0_0_1px_var(--color-border),0_0_0_4px_rgba(8,142,249,0.36)] text-default placeholder:text-placeholder disabled:opacity-60 disabled:bg-gray-100 ${sizes[size]} ${leftPadding} ${rightPadding} ${error ? 'shadow-[0_0_0_1px_var(--color-critical)]' : ''} ${className}`}
           {...props}
         />
         {suffix && (
@@ -159,7 +168,7 @@ export const Textarea = ({
       onChange={onChange}
       placeholder={placeholder}
       rows={rows}
-      className={`w-full px-3 py-2 bg-background text-default placeholder:text-placeholder border border-border rounded-md focus:outline-none focus:ring-[rgba(8,142,249,0.36)] focus:ring-4 text-[16px] sm:text-sm resize-none ${error ? 'border-critical' : ''} ${className}`}
+      className={`w-full appearance-none px-[8px] py-[4px] text-[14px] leading-[20px] rounded-[6px] bg-surface text-default placeholder:text-placeholder shadow-[0_0_0_1px_var(--color-border)] transition-shadow duration-[240ms] focus:outline-none focus:shadow-[0_0_0_1px_var(--color-border),0_0_0_4px_rgba(8,142,249,0.36)] resize-none ${error ? 'shadow-[0_0_0_1px_var(--color-critical)]' : ''} ${className}`}
       {...props}
     />
   );
@@ -195,9 +204,9 @@ export const Select = ({
   ...props
 }) => {
   const sizes = {
-    sm: 'h-[28px] py-[4px] pl-[8px] pr-[28px] text-[12px]',
-    md: 'h-[32px] py-[4px] pl-[8px] pr-[28px] text-[14px]',
-    lg: 'h-[40px] py-[8px] pl-[12px] pr-[32px] text-[16px]',
+    sm: 'h-[24px] py-[4px] pl-[8px] pr-[28px] text-[12px] leading-[16px]',
+    md: 'h-[28px] py-[4px] pl-[8px] pr-[28px] text-[14px] leading-[20px]',
+    lg: 'h-[40px] py-[8px] pl-[12px] pr-[32px] text-[16px] leading-[24px]',
   };
 
   const chevronPositions = {
@@ -210,7 +219,7 @@ export const Select = ({
     <select
       value={value}
       onChange={onChange}
-      className={`border border-border rounded-md focus:outline-none focus:ring-[rgba(8,142,249,0.36)] focus:ring-4 appearance-none bg-no-repeat bg-background text-default placeholder:text-placeholder disabled:opacity-50 disabled:bg-gray-100 ${sizes[size]} ${error ? 'border-critical' : ''} ${className}`}
+      className={`appearance-none rounded-[6px] bg-surface shadow-[0_0_0_1px_var(--color-border)] transition-shadow duration-[240ms] focus:outline-none focus:shadow-[0_0_0_1px_var(--color-border),0_0_0_4px_rgba(8,142,249,0.36)] bg-no-repeat text-default placeholder:text-placeholder disabled:opacity-50 disabled:bg-gray-100 ${sizes[size]} ${error ? 'shadow-[0_0_0_1px_var(--color-critical)]' : ''} ${className}`}
       style={{
         backgroundImage: `url("${selectChevronUrl}")`,
         backgroundPosition: chevronPositions[size],
@@ -262,7 +271,7 @@ export const Checkbox = ({
         />
         <div
           className={`w-[16px] h-[16px] mt-0.5 border rounded-sm transition-all flex items-center justify-center peer-focus:ring-[rgba(8,142,249,0.36)] peer-focus:ring-4 ${checked
-            ? 'bg-blurple border-blurple'
+            ? 'bg-brand-500 border-brand-500'
             : 'bg-surface border-border group-hover:border-gray-400'
             }`}
         >
@@ -313,7 +322,7 @@ export const Radio = ({
         />
         <div
           className={`w-[16px] h-[16px] mt-0.5 border rounded-full transition-all flex items-center justify-center peer-focus:ring-[rgba(8,142,249,0.36)] peer-focus:ring-4 ${checked
-            ? 'bg-blurple border-blurple'
+            ? 'bg-brand-500 border-brand-500'
             : 'bg-surface border-border group-hover:border-gray-400'
             }`}
         >

@@ -1,113 +1,105 @@
 import React, { useEffect, useState } from 'react';
-import { Icon } from '../icons/SailIcons';
+import * as Icons from './icons';
+
+const sizes = {
+  small: 368,
+  medium: 496,
+  large: 648,
+  xlarge: 944,
+};
 
 const Dialog = ({
-  open,
+  isOpen,
   onClose,
-  title,
-  subtitle,
+  onBack,
+  header,
+  subheader,
+  children,
   footer,
   size = 'medium',
-  children,
-  className = '',
-  overlayClassName = '',
+  showCloseButton = true,
+  themeColor = '#0085FF',
+  hideBackdrop = false,
 }) => {
   const [isVisible, setIsVisible] = useState(false);
-  const [isClosing, setIsClosing] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
 
-  const sizes = {
-    small: 'max-w-[368px]',
-    medium: 'max-w-[496px]',
-    large: 'max-w-[648px]',
-    xlarge: 'max-w-[944px]',
-    full: 'w-[calc(100vw-32px)] h-[calc(100vh-32px)]',
-  };
-
-  // Handle open/close state with animation
   useEffect(() => {
-    if (open) {
-      setIsVisible(true);
-      setIsClosing(false);
-    } else if (isVisible) {
-      setIsClosing(true);
+    if (isOpen) {
+      setIsAnimating(true);
+      // Small delay to ensure the element is rendered before animating
+      requestAnimationFrame(() => {
+        setIsVisible(true);
+      });
+    } else {
+      setIsVisible(false);
+      // Wait for animation to complete before unmounting
       const timer = setTimeout(() => {
-        setIsVisible(false);
-        setIsClosing(false);
-      }, 150);
+        setIsAnimating(false);
+      }, 200);
       return () => clearTimeout(timer);
     }
-  }, [open]);
+  }, [isOpen]);
 
-  // Handle escape key
-  useEffect(() => {
-    const handleEscape = (e) => {
-      if (e.key === 'Escape' && open) {
-        onClose?.();
-      }
-    };
-    document.addEventListener('keydown', handleEscape);
-    return () => document.removeEventListener('keydown', handleEscape);
-  }, [open, onClose]);
+  if (!isOpen && !isAnimating) return null;
 
-  // Prevent body scroll when open
-  useEffect(() => {
-    if (isVisible) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [isVisible]);
-
-  if (!isVisible) return null;
-
-  const hasHeader = title || subtitle;
+  const width = sizes[size] || sizes.medium;
 
   return (
-    <div className={`fixed inset-0 z-50 flex items-center justify-center ${isClosing ? 'animate-[fadeOut_150ms_ease-in_forwards]' : 'animate-[fadeIn_150ms_ease-out]'} ${overlayClassName}`}>
+    <div className={`fixed inset-0 z-50 flex items-center justify-center ${hideBackdrop ? 'pointer-events-none' : ''}`}>
       {/* Backdrop */}
-      <div
-        className="absolute inset-0 bg-overlay-backdrop"
-        onClick={onClose}
-      />
+      {!hideBackdrop && (
+        <div
+          className={`absolute inset-0 transition-opacity duration-200 ${isVisible ? 'bg-black/30' : 'bg-black/0'
+            }`}
+          onClick={onClose}
+        />
+      )}
 
       {/* Dialog */}
       <div
-        className={`relative bg-surface rounded-lg shadow-xl ${size !== 'full' ? 'w-full' : ''} ${isClosing ? 'animate-[scaleOut_150ms_ease-in_forwards]' : 'animate-[scaleIn_150ms_ease-out]'} ${sizes[size]} ${className}`}
-        role="dialog"
-        aria-modal="true"
+        className={`relative bg-white rounded-lg shadow-xl flex flex-col max-h-[90vh] transition-all duration-200 ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+          } ${hideBackdrop ? 'pointer-events-auto' : ''}`}
+        style={{ width }}
       >
-        {/* Close button */}
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 size-7 flex items-center justify-center rounded text-icon-subdued hover:bg-offset transition-colors cursor-pointer"
-          aria-label="Close"
-        >
-          <Icon name="cancel" size="xxsmall" fill="currentColor" />
-        </button>
-
         {/* Header */}
-        {hasHeader && (
-          <div className="px-[16px] pt-[16px] pb-4">
-            {title && (
-              <h2 className="text-lg font-semibold text-default pr-8">{title}</h2>
+        <div className="flex items-start justify-between p-5 border-b border-gray-200">
+          <div className="flex-1 flex items-start gap-2 min-w-0">
+            {onBack && (
+              <button
+                onClick={onBack}
+                className="text-gray-400 transition-colors p-1 cursor-pointer hover:bg-gray-100 hover:text-gray-700 rounded-sm -ml-1 mt-0.5 flex-shrink-0"
+              >
+                <Icons.ArrowLeftIcon size={16} />
+              </button>
             )}
-            {subtitle && (
-              <p className="mt-1 text-sm text-subdued">{subtitle}</p>
-            )}
+            <div className="flex-1 min-w-0">
+              {header && (
+                <h2 className="text-lg font-semibold text-gray-900">{header}</h2>
+              )}
+              {subheader && (
+                <p className="text-sm text-gray-500 mt-1">{subheader}</p>
+              )}
+            </div>
           </div>
-        )}
+          {showCloseButton && (
+            <button
+              onClick={onClose}
+              className="text-gray-800 transition-colors p-1.5 cursor-pointer hover:bg-gray-100 hover:text-gray-700 rounded-sm flex-shrink-0"
+            >
+              <Icons.CloseIcon />
+            </button>
+          )}
+        </div>
 
         {/* Content */}
-        <div className={`px-[16px] ${hasHeader ? 'pb-[16px]' : 'py-[16px]'} ${footer ? '' : 'pb-[16px]'}`}>
+        <div className="p-5 overflow-y-auto flex-1">
           {children}
         </div>
 
         {/* Footer */}
         {footer && (
-          <div className="px-[16px] py-4">
+          <div className="flex items-center justify-end gap-2 px-6 py-4 border-t border-gray-200">
             {footer}
           </div>
         )}
